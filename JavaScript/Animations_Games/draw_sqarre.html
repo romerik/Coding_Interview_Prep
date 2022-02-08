@@ -1,0 +1,68 @@
+<!DOCTYPE>
+    <html>
+        <head>
+            <title>blabla</title>
+            <meta charset="utf-8">
+            <style>
+                #carre
+                {
+                    display: block;
+                    border: 2px solid red;
+                    margin: auto;
+                    padding: 5px;
+                }
+            </style>
+        </head
+        <body>
+            <canvas id="carre" height='505' width='505'></canvas>
+            <script>
+                var gauche=0;
+                var vrai=false;
+                var haut=0;
+                var largeur=500;
+                var nombre=prompt("Enter the number of squares you want to draw on the screen:");
+                var canvas=document.getElementById('carre');
+                var context=canvas.getContext('2d');
+                context.lineWidth='1';
+                context.strokeStyle='black';
+                do
+                {
+                if(nombre<=Math.trunc((largeur+12)/62)*Math.trunc((largeur+12)/62))
+                 {
+                    vrai=true;
+                    for(i=0;i<nombre;i++)
+                    {
+                         if(i==0)
+                            {
+                                context.strokeRect(gauche,haut,50,50);
+                                gauche+=62;
+                            }
+                         else if(i>=1)
+                            {
+                                        if(((i+1)%Math.trunc((largeur+12)/62))==0)
+                                        {
+                                            context.strokeRect(gauche,haut,50,50);
+                                            gauche=0;
+                                            haut+=62;
+                                        }
+                                        else
+                                        {
+                                            context.strokeRect(gauche,haut,50,50);
+                                            gauche+=62;
+                                        }
+                           
+                            }
+                    } 
+                  }
+                else
+                    {
+                        largeur+=1;
+                        canvas.width=largeur;
+                        canvas.height=largeur;
+                    }
+                }while(vrai==false);
+                
+                
+            </script>
+        </body>
+    </html>

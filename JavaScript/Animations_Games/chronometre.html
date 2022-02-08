@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Chrono</title>
+	<meta charset="utf-8">
+</head>
+<body>
+		<h1>Chronomêtre</h1>
+		<!--<button onclick="start()">Lancer le décompte</button>
+		<div id="bip" class="display"></div>
+
+		<script>
+		var counter = 10;
+		var intervalId = null;
+		function finish() {
+		  clearInterval(intervalId);
+		  document.getElementById("bip").innerHTML = "TERMINE!";	
+		}
+		function bip() {
+		    counter--;
+		    if(counter == 0) finish();
+		    else {	
+		        document.getElementById("bip").innerHTML = counter + " secondes restantes";
+		    }	
+		}
+		function start(){
+		  intervalId = setInterval(bip, 1000);
+		}	
+		</script>-->
+		<button onclick="Chrono()">Démarrer</button><br>
+		<p><b>00:00:00:00</b></p>
+		<script>
+			var p;
+			var h=0,m=0,s=0,tierce=0,x;
+			p=document.querySelector('p');
+			function compteur(){
+				tierce++;
+				if(tierce==60)
+				{   tierce=0;
+					s++;
+				}
+				if(s==60)
+				{
+					s=0;
+					m++;
+				}
+				if(m==60)
+				{
+					m=0;
+					h++;
+				}
+				if(h==24)
+				{
+					h=0;
+				}
+				p.innerHTML=h+':'+m+':'+s+'s:'+tierce;
+			}
+			function Chrono()
+			{
+				x=setInterval(compteur,Number(1000/60));
+			}
+		</script>
+</body>
+</html>

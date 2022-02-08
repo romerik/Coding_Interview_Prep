@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+	<html>
+		<head>
+			<title>Deux ballons bougent</title>
+			<meta charset="utf-8">
+		</head>
+		<body>
+			<canvas id="canvas" width="500" height="300"></canvas><br>
+			<button onclick="arret(this)">Pause</button>
+			<script type="text/javascript">
+				var dx_1=-1,dy_1=1,dx_2=1,dy_2=-1;
+				var x_a=150,y_a=30,x_b=50,y_b=270;
+				var rayon=20;
+				var canvas=document.getElementById('canvas');
+				var context=canvas.getContext('2d');
+				canvas.style.border="5px solid blue";
+				canvas.style.backgroundColor="#ccc";
+				var boutton=document.querySelector('button');
+				function dessiner_balle_1()
+				{
+					context.beginPath();
+					context.fillStyle="red";
+					context.arc(x_a,y_a,rayon,0,2*Math.PI);
+					context.fill();
+					context.closePath();
+					context.beginPath();
+					context.fillStyle="yellow";
+					context.arc(x_b,y_b,rayon,0,2*Math.PI);
+					context.fill();
+					context.closePath();
+				}
+				function bouger()
+				{
+					context.clearRect(0,0,canvas.width,canvas.height);
+					dessiner_balle_1();
+					if((Math.abs(x_a-x_b)<=2*rayon && Math.abs(y_a-y_b)==2*rayon) || (Math.abs(x_a-x_b)==2*rayon && Math.abs(y_a-y_b)<=2*rayon))
+					{
+						dx_1=-dx_1;
+						dx_2=-dx_2;
+						dy_1=-dy_1;
+						dy_2=-dy_2;
+					}
+					if((x_a+dx_1>canvas.width-rayon) || (x_a+dx_1<rayon))
+					{
+						dx_1=-dx_1;
+					}
+					if((x_b+dx_2>canvas.width-rayon) || (x_b+dx_2<rayon))
+					{
+						dx_2=-dx_2;
+					}
+					if((y_a+dy_1>canvas.height-rayon) || (y_a+dy_1<rayon))
+					{
+						dy_1=-dy_1;
+					}
+					if((y_b+dy_2>canvas.height-rayon) || (y_b+dy_2<rayon))
+					{
+						dy_2=-dy_2;
+					}
+					x_a+=dx_1;
+					x_b+=dx_2;
+					y_a+=dy_1;
+					y_b+=dy_2;
+				}
+				var jeu=setInterval(bouger,0.01);
+				function arret(){clearInterval(jeu);}
+			</script>
+		</body>
+	</html>

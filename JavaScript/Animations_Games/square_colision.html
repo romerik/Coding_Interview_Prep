@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+            <title>Carre</title>
+            <meta charset="utf-8">
+            <style>
+                canvas
+                {
+                    border: 1px solid red;
+                    margin: 10% 10%;
+                    padding: 0px;
+                    background-color: gray;
+                }
+            </style>
+        </head>
+        <body>
+                <canvas id="canvas" width="800" height="600"></canvas>
+                <script type="text/javascript">
+                    var canvas = document.getElementById("canvas");
+                    var ctx = canvas.getContext("2d");
+                    var coteCarre = 50;
+                    var x_a = 10,x_b = 600;
+                    var y_a = 20,y_b = 500;
+                    var dx_1 = 1,dx_2 = -1;
+                    var dy_1 = 1,dy_2 = 1;
+                    function drawBall() {
+                    	ctx.beginPath();
+                        ctx.fillStyle = "#fff";
+                        ctx.fillRect(x_a,y_a,coteCarre,coteCarre);
+                        ctx.closePath();
+                        ctx.beginPath();
+                        ctx.fillStyle = "red";
+                        ctx.fillRect(x_b,y_b,coteCarre,coteCarre);
+                        ctx.closePath();
+                    }
+                    function draw() {
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        drawBall();
+                        
+                        if(x_a + dx_1 > canvas.width-coteCarre || x_a + dx_1 < 0) {
+                            dx_1 = -dx_1;
+                        }
+                        if(y_a + dy_1 > canvas.height-coteCarre || y_a + dy_1 < 0) {
+                            dy_1 = -dy_1;
+                        }
+                        if(x_b + dx_2 > canvas.width-coteCarre || x_b + dx_2 < 0) {
+                            dx_2 = -dx_2;
+                        }
+                        if(y_b + dy_2 > canvas.height-coteCarre || y_b + dy_2 < 0) {
+                            dy_2 = -dy_2;
+                        }
+                        if((Math.abs(x_a-x_b)==coteCarre && Math.abs(y_a-y_b)<=coteCarre) || (Math.abs(x_a-x_b)<=coteCarre && Math.abs(y_a-y_b)==coteCarre))
+                        {
+                        	dx_1 = -dx_1;
+                        	dy_1 = -dy_1;
+                        	dx_2 = -dx_2;
+                        	dy_2 = -dy_2;
+                        }
+                        
+                        x_a += dx_1;
+                        y_a += dy_1;
+                         x_b += dx_2;
+                        y_b += dy_2;
+                    }
+
+                    setInterval(draw, 1);
+                </script>
+        </body>
+    </html>

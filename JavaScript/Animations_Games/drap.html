@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Drapeau</title>
+	<meta charset="utf-8">
+	<style type="">
+		canvas
+		{
+			border: 1px solid black;
+			margin: 20px auto;
+		}
+		body
+		{
+			margin: 0px;
+			padding: 0px;
+		}
+	</style>
+</head>
+<body>
+<p>Wait a few seconds </p>
+	<canvas width="500" height="500" onclick="start(this)"></canvas>
+	<script type="text/javascript">
+		var canvas=document.querySelector('canvas');
+		cont=canvas.getContext('2d');
+		function vert()
+		{
+			cont.fillStyle='green';
+		cont.fillRect(0,0,250,500);
+		}
+		function jaune()
+		{
+			cont.fillStyle='yellow';
+		cont.fillRect(250,0,250,250);
+		}
+		function rouge()
+		{
+			cont.fillStyle='red';
+		cont.fillRect(250,250,250,250);
+		}
+		function effacer()
+		{
+			cont.clearRect(0,0,500,500);
+		}
+		function start(f)
+		{
+			setInterval(affich,4500);
+		}
+		function affich(f)
+		{
+			setTimeout(vert,1000);
+			setTimeout(jaune,2000);
+			setTimeout(rouge,3000);
+			setTimeout(effacer,4000);
+		}
+		
+	</script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+	<html>
+		<head>
+			<title>Polygone</title>
+		</head>
+		<body>
+			<canvas id="canvas" height="600" width="600"></canvas>
+			<script type="text/javascript">
+				var canvas=document.getElementById('canvas');
+				var x=100;
+				var y=100;
+				var ximage=x,yimage=y;
+				var context=canvas.getContext('2d');
+				canvas.style.border="5px solid blue";
+				var n=prompt("Enter the dimensioned number of your regular polygon: ");
+				var x_centre=canvas.width/2;
+				var y_centre=canvas.height/2;
+				var angle_alpha=(2*Math.PI)/n;
+				var cpt=0;
+				for(cpt=0;cpt<n;cpt++)
+				{
+					x=ximage;
+					y=yimage;
+				var ximage=(Math.cos(angle_alpha)*(x-x_centre))-(Math.sin(angle_alpha)*(y-y_centre))+x_centre;
+				var	yimage=(Math.sin(angle_alpha)*(x-x_centre))+(Math.cos(angle_alpha)*(y-y_centre))+y_centre;
+				if(yimage<1 || yimage>canvas.height-2)
+				{
+					while(yimage<1 || yimage>canvas.height-2)
+					{
+						canvas.height+=25;
+					}
+				}
+				if(ximage<1 || ximage>canvas.width-2)
+				{
+					while(ximage<1 || ximage>canvas.width-2)
+					{
+						canvas.width+=25;
+					}
+				}
+					context.beginPath();
+					context.lineWidth='2';
+					context.strokeStyle='red';
+					context.moveTo(x,y);
+					context.lineTo(ximage,yimage);
+					context.stroke();
+				}
+			</script>
+		</body>
+	</html>

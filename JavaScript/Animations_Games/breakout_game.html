@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+	<html>
+		<head>
+			<title>Jeu de carre</title>
+			<meta charset="utf-8">
+			<style type="text/css">
+				canvas { background: rgba(100,150,70,0.6); }
+			</style>
+		</head>
+		<body>
+			<canvas id="myCanvas" width="650" height="520"></canvas>
+			<script type="text/javascript">
+				var canvas = document.getElementById("myCanvas");
+					var ctx = canvas.getContext("2d");
+					var rayon = 10;
+					var x = 470;
+					var y = 500;
+					var dx = 1;
+					var dy = -1;
+					var score=0;
+					var vie=3;
+					var briqueHauteur=20,briqueLargeur=60,padding=15,espace_haut=15,espace_gauche=20,nbreColonne=8,nbreLignes=5;
+					var raquetteHauteur=10,raquetteLargeur=70;
+					var flecheDroite=false,flecheGauche=false;
+					var raquette_x=canvas.width/2;
+					var briques=[];
+					for(var colonne=0;colonne<nbreColonne;colonne++)
+					{
+						briques[colonne]=[];
+						for(var ligne=0;ligne<nbreLignes;ligne++)
+						{
+							briques[colonne][ligne]={x:0,y:0,visible:1};
+						}
+					}
+					document.addEventListener("keydown",appui,false);
+					document.addEventListener("keyup",relache,false);
+					canvas.style.border="5px solid maroon";
+					function appui(e)
+					{
+						if(e.keyCode==39)
+						{
+							flecheDroite=true;
+						}
+						else if(e.keyCode==37)
+						{
+							flecheGauche=true;
+						}
+					}	
+					function relache(e)
+					{
+						if(e.keyCode==39)
+						{
+							flecheDroite=false;
+						}
+						else if(e.keyCode==37)
+						{
+							flecheGauche=false;
+						}
+					}
+					function Collision()
+					{
+						for(colonne=0;colonne<nbreColonne;colonne++)
+						{
+							for(ligne=0;ligne<nbreLignes;ligne++)
+							{
+								if(briques[colonne][ligne].visible==1)
+								{
+									var y_b=briques[colonne][ligne].y+briqueHauteur;
+									var x_b=briques[colonne][ligne].x+briqueLargeur;
+									if((x>=briques[colonne][ligne].x && x<=briques[colonne][ligne].x+briqueLargeur && y-rayon==briques[colonne][ligne].y+briqueHauteur) ||(x>=briques[colonne][ligne].x && x<=briques[colonne][ligne].x+briqueLargeur && y+rayon==briques[colonne][ligne].y))
+									   {dy=-dy;
+										   briques[colonne][ligne].visible=0;
+										   score++;
+										   if(score==nbreLignes*nbreColonne){
+												alert("BRAVO TU AS GAGNE CHAMPION");
+												confirm("Veux-tu rejouer?");
+											   if(confirm())
+											   	document.location.reload();
+											   else
+											   	{alert("FIN JEU");
+											   	clearInterval(jeu);}
+										   }
+									    }
+								   else if((y>=briques[colonne][ligne].y && y<=briques[colonne][ligne].y+briqueHauteur && x-rayon==briques[colonne][ligne].x+briqueLargeur) || (y>=briques[colonne][ligne].y && y<=briques[colonne][ligne].y+briqueHauteur && x+rayon==briques[colonne][ligne].x))
+								   {
+									   dx=-dx;
+									   briques[colonne][ligne].visible=0;
+									    score++;
+										if(score==nbreLignes*nbreColonne){
+											   alert("BRAVO TU AS GAGNE CHAMPION");
+											   confirm("Veux-tu rejouer?");
+											   if(confirm())
+											   	document.location.reload();
+											   else
+											   {alert("FIN JEU");
+											   	clearInterval(jeu);}}
+								   }
+								   else if((Math.sqrt(Math.pow(Math.abs(x_b-x),2)+Math.pow(Math.abs(y_b-y),2))<=rayon) || (Math.sqrt(Math.pow(Math.abs(briques[colonne][ligne].x-x),2)+Math.pow(Math.abs(y_b-y),2))<=rayon) || (Math.sqrt(Math.pow(Math.abs(briques[colonne][ligne].x-x),2)+Math.pow(Math.abs(briques[colonne][ligne].y-y),2))<=rayon) || (Math.sqrt(Math.pow(Math.abs(x_b-x),2)+Math.pow(Math.abs(briques[colonne][ligne].y-y),2))<=rayon))
+								   {
+									dx=-dx;
+									dy=-dy;
+									briques[colonne][ligne].visible=0;
+									score++;
+									if(score==nbreLignes*nbreColonne){
+											   alert("BRAVO TU AS GAGNE CHAMPION");
+											   confirm("Veux-tu rejouer?");
+											   if(confirm())
+											   	document.location.reload();
+											   else
+											   {alert("FIN JEU");
+											   	clearInterval(jeu);}
+											}
+								   }
+								}		
+							}
+						}
+					}
+					function dessiner_score()
+					{
+						ctx.font="20px Algerian";
+						ctx.fillStyle="white";
+						ctx.fillText("Score: "+score,canvas.width-250,canvas.height-250);
+					}
+					function dessiner_vie()
+					{
+						ctx.font="12px";
+						ctx.fillStyle="white serif";
+						ctx.fillText("vie: "+vie,canvas.width-100,canvas.height-50);
+					}	
+					function dessiner()
+					{
+						ctx.beginPath();
+						ctx.fillStyle="gray";
+						ctx.fillRect(raquette_x,canvas.height-raquetteHauteur,raquetteLargeur,raquetteHauteur);
+						ctx.closePath();
+					    ctx.beginPath();
+					    ctx.arc(x, y, rayon, 0, Math.PI*2);
+					    ctx.fillStyle = "blue";
+					    ctx.fill();
+					    ctx.closePath();
+					}
+					function construire_brique()
+					{
+						for(colonne=0;colonne<nbreColonne;colonne++)
+					{
+						for(ligne=0;ligne<nbreLignes;ligne++)
+						{	if(briques[colonne][ligne].visible==1)
+							{
+							var briq_x=(colonne*(briqueLargeur+padding))+espace_gauche;
+							var briq_y=(ligne*(briqueHauteur+padding)+espace_haut);
+							briques[colonne][ligne].x=briq_x;
+							briques[colonne][ligne].y=briq_y;
+							ctx.beginPath();
+							ctx.fillStyle="yellow";
+							ctx.fillRect(briq_x,briq_y,briqueLargeur,briqueHauteur);
+							ctx.closePath();
+						    }
+						}
+					}
+					}
+					function draw() {
+					    ctx.clearRect(0, 0, canvas.width, canvas.height);
+					    dessiner();
+					    construire_brique();
+					    Collision();
+					    dessiner_score();
+					    dessiner_vie();
+					    if(x + dx > canvas.width-rayon || x + dx < rayon) {
+					        dx = -dx;
+					    }
+					    if(y+rayon==canvas.height-raquetteHauteur && x<=raquette_x+raquetteLargeur+1 && x>=raquette_x)
+					    {
+					    	dy=-dy;
+					    }
+					    if(y + dy < rayon) {
+					        dy = -dy;
+					    }
+					    else if(y + dy > canvas.height-rayon)
+					    	{vie--
+					    		if(vie==0){
+					    		alert("GAME OVER");
+					     document.location.reload();
+					    	clearInterval(jeu); }}
+					    if(flecheGauche==true)
+					    {
+					    	raquette_x-=2;
+					    	if(raquette_x<0)
+					    		raquette_x=0;
+					    }
+					    if(flecheDroite==true)
+					    {
+					    	raquette_x+=2;
+					    	if(raquette_x>canvas.width-raquetteLargeur)
+					    		raquette_x=canvas.width-raquetteLargeur-1;
+					    }
+					    x += dx;
+					    y += dy;
+					}
+
+					var jeu=setInterval(draw, 1);
+			</script>
+		</body>
+	</html>

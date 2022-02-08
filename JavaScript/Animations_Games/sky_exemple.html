@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Boules</title>
+  <meta charset="utf-8">
+  <style>
+    canvas{
+      position: absolute;
+      top: 25%;
+      left: 5%;
+      width:90%;
+      height: 50%;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas"></canvas>
+  <script type="text/javascript">
+    var can = document.getElementById('canvas');
+    can.style.border = "5px solid black";
+    can.style.background = "black";
+    can.width*=4; //augmenter la taille pour un meilleur rendu
+    can.height*=6;
+    var ctx = can.getContext('2d');
+    var ballons = new Array();
+
+    function boule(x, y, r, couleur)
+    {
+      this.dx = 5;
+      this.dy = 5;
+      this.posX = x;
+      this.posY = y;
+      this.rayon = r;
+      this.color = couleur;
+      this.draw = function()
+      {
+        ctx.beginPath();
+        ctx.fillStyle = this.color;
+        ctx.arc(this.posX, this.posY, this.rayon, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.closePath();
+      };
+      this.bouger = function()
+      {
+        this.draw();
+          this.dx = -this.dx;
+          this.dy = -this.dy;
+        this.posX += this.dx;
+        this.posY += this.dy;
+      };
+    }
+    for (let i = 0; i < 150; i++)
+    {
+      let rayon = Math.round(Math.random() * 10);
+      let x = Math.round(Math.random() *( can.width-rayon)+rayon);
+      let y = Math.round(Math.random() * can.height);
+      let couleur = "white";
+      ballons.push(new boule(x, y, rayon, couleur));
+    }
+    
+    requestAnimationFrame(display)
+    function display(){
+     ctx.clearRect(0, 0, can.width, can.height);
+   for(ball of ballons){
+     ball.draw()
+     ball.bouger()
+   }
+       requestAnimationFrame(display)
+
+    }
+  </script>
+</body>
+
+</html>
